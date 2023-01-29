@@ -1,0 +1,11 @@
+# ignore folders ".terraform"
+**/.terraform
+
+# ignore lockfile
+**/.terraform.lock.hcl
+
+# ignore terraform state files
+**/terraform.tfstate*
+
+# ignore log files
+**/*.log
