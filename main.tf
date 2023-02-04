@@ -1,12 +1,15 @@
 resource "scaleway_domain_zone" "this" {
-  domain    = var.domain
-  subdomain = var.subdomain
+  domain     = var.domain
+  project_id = var.project_id
+  subdomain  = var.subdomain
 }
 
 resource "scaleway_tem_domain" "this" {
   count = var.setup_tem ? 1 : 0
 
-  name = local.dns_zone
+  name       = local.dns_zone
+  project_id = var.project_id
+  region     = var.region
 }
 
 resource "scaleway_domain_record" "dkim" {
