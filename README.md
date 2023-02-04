@@ -41,6 +41,8 @@ module "my_domain" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_domain"></a> [domain](#input_domain) | n/a | `string` | n/a | yes |
 | <a name="input_mx_servers"></a> [mx_servers](#input_mx_servers) | n/a | ```list(object({ address = string priority = number }))``` | ```[ { "address": ".", "priority": 0 } ]``` | no |
+| <a name="input_project_id"></a> [project_id](#input_project_id) | ID of the project the domain is associated with. Ressource will be created in the region set by the provider if null. | `string` | `"null"` | no |
+| <a name="input_region"></a> [region](#input_region) | Region in which the domain should be created. Ressource will be created in the region set by the provider if null. | `string` | `"null"` | no |
 | <a name="input_setup_tem"></a> [setup_tem](#input_setup_tem) | n/a | `bool` | `false` | no |
 | <a name="input_subdomain"></a> [subdomain](#input_subdomain) | n/a | `string` | `""` | no |
 
