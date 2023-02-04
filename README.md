@@ -52,3 +52,11 @@ module "my_domain" {
 | <a name="output_tem_id"></a> [tem_id](#output_tem_id) | ID of the Transaction Email Domain. |
 | <a name="output_tem_status"></a> [tem_status](#output_tem_status) | Status of the Transaction Email Domain. |
 <!-- END_TF_DOCS -->
+
+## Authors
+
+Module is maintained with help from [the community](https://github.com/scaleway-terraform-modules/terraform-scaleway-domain/graphs/contributors).
+
+## License
+
+Mozilla Public License 2.0 Licensed. See [LICENSE](https://github.com/scaleway-terraform-modules/.github/tree/master/LICENSE) for full details.
