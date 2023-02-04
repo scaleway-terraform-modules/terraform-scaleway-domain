@@ -14,13 +14,7 @@ variable "mx_servers" {
 }
 
 variable "project_id" {
-  description = "ID of the project the domain is associated with. Ressource will be created in the region set by the provider if null."
-  type        = string
-  default     = null
-}
-
-variable "region" {
-  description = "Region in which the domain should be created. Ressource will be created in the region set by the provider if null."
+  description = "ID of the project the domain is associated with. Ressource will be created in the project set at the provider level if null."
   type        = string
   default     = null
 }
@@ -31,6 +25,7 @@ variable "subdomain" {
 }
 
 variable "setup_tem" {
-  type    = bool
-  default = false
+  type        = bool
+  description = "Whether to create a Transaction Email service. **Beware that the service is only available in region `fr-par` at the moment.**"
+  default     = false
 }

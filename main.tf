@@ -9,7 +9,6 @@ resource "scaleway_tem_domain" "this" {
 
   name       = local.dns_zone
   project_id = var.project_id
-  region     = var.region
 }
 
 resource "scaleway_domain_record" "dkim" {
