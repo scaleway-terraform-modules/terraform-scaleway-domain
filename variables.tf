@@ -1,8 +1,10 @@
 variable "domain" {
-  type = string
+  description = "Name of the domain to manage."
+  type        = string
 }
 
 variable "mx_servers" {
+  description = "Informations regarding MX servers. **MX servers are required to enable Transactional Emails.**"
   type = list(object({
     address  = string
     priority = number
@@ -20,8 +22,9 @@ variable "project_id" {
 }
 
 variable "subdomain" {
-  type    = string
-  default = ""
+  description = "Name of the subdomain to manage."
+  type        = string
+  default     = ""
 }
 
 variable "setup_tem" {
