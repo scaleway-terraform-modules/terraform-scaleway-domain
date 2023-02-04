@@ -25,7 +25,7 @@ module "my_domain" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | >= 0.13 |
-| <a name="requirement_scaleway"></a> [scaleway](#requirement_scaleway) | >= 2 |
+| <a name="requirement_scaleway"></a> [scaleway](#requirement_scaleway) | >= 2.6.0 |
 
 ## Providers
 
