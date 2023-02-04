@@ -11,8 +11,8 @@ This repository is used to manage a domain on scaleway using terraform.
 
 ```hcl
 module "my_domain" {
-  source  = "benoit-garcia/domain/scaleway"
-  version = "1.0.0"
+  source  = "scaleway-terraform-modules/domain/scaleway"
+  version = "0.0.2"
 
 }
 ```
