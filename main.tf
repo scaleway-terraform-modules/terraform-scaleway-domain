@@ -7,6 +7,7 @@ resource "scaleway_domain_zone" "this" {
 resource "scaleway_tem_domain" "this" {
   count = var.setup_tem ? 1 : 0
 
+  accept_tos = true
   name       = local.dns_zone
   project_id = var.project_id
 }
