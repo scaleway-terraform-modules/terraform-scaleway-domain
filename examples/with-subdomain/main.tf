@@ -10,13 +10,6 @@ locals {
   subdomain   = "contact"
 }
 
-module "root" {
-  source = "../../"
-
-  domain     = local.domain_name
-  project_id = data.scaleway_account_project.default.id
-}
-
 module "subdomain" {
   source = "../../"
 

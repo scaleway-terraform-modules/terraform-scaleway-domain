@@ -3,6 +3,7 @@
 ## Purpose
 
 This repository is used to manage a domain on scaleway using terraform.
+Beware this module *can not* be used to register a new domain. Existing domains must first be imported manually after initializing the terraform project. Refer to examples for more informations.
 
 ## Usage
 
