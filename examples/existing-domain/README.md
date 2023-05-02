@@ -1,6 +1,6 @@
-# Simple domain
+# Existing domain
 
-This example shows how to manage a single domain named `example.net`.
+This example shows how to import an existing domain named `example.net` in order to manage it.
 
 ## Usage
 
@@ -8,6 +8,7 @@ To run this example you need to execute:
 
 ```bash
 $ terraform init
+$ terraform import domain.scaleway_domain_zone.this example.net
 $ terraform plan
 $ terraform apply
 ```

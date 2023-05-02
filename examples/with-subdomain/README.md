@@ -1,6 +1,6 @@
 # Manage a subdomain
 
-This example shows how to manage the domain `exemple.net` along with a subdomain named `contact`.
+This example shows how to manage the domain `contact.example.net`.
 
 ## Usage
 
@@ -32,7 +32,6 @@ Note that this example won't work as the domain name has been reserved by IANA f
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_root"></a> [root](#module_root) | ../../ | n/a |
 | <a name="module_subdomain"></a> [subdomain](#module_subdomain) | ../../ | n/a |
 
 ## Resources

@@ -1,6 +1,6 @@
 # Complete domain
 
-This example shows how to manage the domain `exemple.net` along with a subdomain named `contact`, setting up transaction email and external MX records on this latest.
+This example shows how to manage the sub-domain `contact.example.net`, setting up transaction email and external MX records.
 
 ## Usage
 
@@ -32,7 +32,6 @@ Note that this example won't work as the domain name has been reserved by IANA f
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_root"></a> [root](#module_root) | ../../ | n/a |
 | <a name="module_subdomain"></a> [subdomain](#module_subdomain) | ../../ | n/a |
 
 ## Resources
