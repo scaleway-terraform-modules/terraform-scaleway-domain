@@ -10,8 +10,8 @@ variable "mx_servers" {
     priority = number
   }))
   default = [{
-    address  = "."
-    priority = 0
+    address  = "blackhole.scw-tem.cloud."
+    priority = 10
   }]
 }
 
