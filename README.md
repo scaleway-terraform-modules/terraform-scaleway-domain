@@ -13,7 +13,7 @@ Beware this module *can not* be used to register a new domain. Existing domains 
 ```hcl
 module "my_domain" {
   source  = "scaleway-terraform-modules/domain/scaleway"
-  version = "0.0.2"
+  version = "1.0.2"
 
 }
 ```
@@ -41,7 +41,7 @@ module "my_domain" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_domain"></a> [domain](#input_domain) | Name of the domain to manage. | `string` | n/a | yes |
-| <a name="input_mx_servers"></a> [mx_servers](#input_mx_servers) | Informations regarding MX servers. **MX servers are required to enable Transactional Emails.** | ```list(object({ address = string priority = number }))``` | ```[ { "address": ".", "priority": 0 } ]``` | no |
+| <a name="input_mx_servers"></a> [mx_servers](#input_mx_servers) | Informations regarding MX servers. **MX servers are required to enable Transactional Emails.** | ```list(object({ address = string priority = number }))``` | ```[ { "address": "blackhole.scw-tem.cloud.", "priority": 10 } ]``` | no |
 | <a name="input_project_id"></a> [project_id](#input_project_id) | ID of the project the domain is associated with. Ressource will be created in the project set at the provider level if null. | `string` | `null` | no |
 | <a name="input_setup_tem"></a> [setup_tem](#input_setup_tem) | Whether to create a Transaction Email service. **Beware that the service is only available in region `fr-par` at the moment.** | `bool` | `false` | no |
 | <a name="input_subdomain"></a> [subdomain](#input_subdomain) | Name of the subdomain to manage. | `string` | `""` | no |
