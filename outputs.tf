@@ -8,7 +8,7 @@ output "tem_id" {
   value       = coalesce(scaleway_tem_domain.this[*].id, null)
 }
 
-output "tem_status" {
-  description = "Status of the Transaction Email Domain."
-  value       = coalesce(scaleway_tem_domain.this[*].status, null)
+output "tem_validated" {
+  description = "Indicates if the domain has been verified for email sending."
+  value       = try(scaleway_tem_domain_validation.this[0].validated, null)
 }
