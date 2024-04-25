@@ -24,13 +24,14 @@ module "my_domain" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | >= 0.13 |
-| <a name="requirement_scaleway"></a> [scaleway](#requirement_scaleway) | >= 2.14.0 |
+| <a name="requirement_scaleway"></a> [scaleway](#requirement_scaleway) | >= 2.40.0 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
 | [scaleway_domain_record.dkim](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/domain_record) | resource |
+| [scaleway_domain_record.dmarc](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/domain_record) | resource |
 | [scaleway_domain_record.mx](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/domain_record) | resource |
 | [scaleway_domain_record.spf](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/domain_record) | resource |
 | [scaleway_domain_zone.this](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/domain_zone) | resource |

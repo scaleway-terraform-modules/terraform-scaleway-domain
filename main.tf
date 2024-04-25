@@ -21,6 +21,15 @@ resource "scaleway_domain_record" "dkim" {
   type     = "TXT"
 }
 
+resource "scaleway_domain_record" "dmarc" {
+  count = var.setup_tem ? 1 : 0
+
+  data     = scaleway_tem_domain.this[count.index].dmarc_config
+  dns_zone = local.dns_zone
+  name     = scaleway_tem_domain.this[count.index].dmarc_name
+  type     = "TXT"
+}
+
 resource "scaleway_domain_record" "mx" {
   count = length(var.mx_servers)
 
