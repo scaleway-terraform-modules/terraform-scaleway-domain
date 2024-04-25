@@ -36,6 +36,7 @@ module "my_domain" {
 | [scaleway_domain_record.spf](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/domain_record) | resource |
 | [scaleway_domain_zone.this](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/domain_zone) | resource |
 | [scaleway_tem_domain.this](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/tem_domain) | resource |
+| [scaleway_tem_domain_validation.this](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/tem_domain_validation) | resource |
 
 ## Inputs
 
@@ -53,7 +54,7 @@ module "my_domain" {
 |------|-------------|
 | <a name="output_dns_zone"></a> [dns_zone](#output_dns_zone) | DNS Zone of the domain. |
 | <a name="output_tem_id"></a> [tem_id](#output_tem_id) | ID of the Transaction Email Domain. |
-| <a name="output_tem_status"></a> [tem_status](#output_tem_status) | Status of the Transaction Email Domain. |
+| <a name="output_tem_validated"></a> [tem_validated](#output_tem_validated) | Indicates if the domain has been verified for email sending. |
 <!-- END_TF_DOCS -->
 
 ## Authors

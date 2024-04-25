@@ -48,3 +48,9 @@ resource "scaleway_domain_record" "spf" {
   name     = ""
   type     = "TXT"
 }
+
+resource "scaleway_tem_domain_validation" "this" {
+  count = var.setup_tem ? 1 : 0
+
+  domain_id = scaleway_tem_domain.this[count.index].id
+}
