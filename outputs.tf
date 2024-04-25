@@ -5,7 +5,7 @@ output "dns_zone" {
 
 output "tem_id" {
   description = "ID of the Transaction Email Domain."
-  value       = coalesce(scaleway_tem_domain.this[*].id, null)
+  value       = try(scaleway_tem_domain.this[0].id, null)
 }
 
 output "tem_reputation" {
