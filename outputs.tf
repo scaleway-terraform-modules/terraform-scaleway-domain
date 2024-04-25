@@ -8,6 +8,11 @@ output "tem_id" {
   value       = coalesce(scaleway_tem_domain.this[*].id, null)
 }
 
+output "tem_reputation" {
+  description = "Reputation of the Transaction Email Domain."
+  value       = try(scaleway_tem_domain.this[0].reputation, null)
+}
+
 output "tem_validated" {
   description = "Indicates if the domain has been verified for email sending."
   value       = try(scaleway_tem_domain_validation.this[0].validated, null)
