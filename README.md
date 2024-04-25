@@ -55,6 +55,7 @@ module "my_domain" {
 | <a name="output_dns_zone"></a> [dns_zone](#output_dns_zone) | DNS Zone of the domain. |
 | <a name="output_tem_id"></a> [tem_id](#output_tem_id) | ID of the Transaction Email Domain. |
 | <a name="output_tem_reputation"></a> [tem_reputation](#output_tem_reputation) | Reputation of the Transaction Email Domain. |
+| <a name="output_tem_status"></a> [tem_status](#output_tem_status) | Status of the Transaction Email Domain. |
 | <a name="output_tem_validated"></a> [tem_validated](#output_tem_validated) | Indicates if the domain has been verified for email sending. |
 <!-- END_TF_DOCS -->
 
