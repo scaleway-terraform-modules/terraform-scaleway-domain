@@ -30,6 +30,7 @@ module "my_domain" {
 
 | Name | Type |
 |------|------|
+| [scaleway_domain_record.bimi](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/domain_record) | resource |
 | [scaleway_domain_record.dkim](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/domain_record) | resource |
 | [scaleway_domain_record.dmarc](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/domain_record) | resource |
 | [scaleway_domain_record.mx](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/domain_record) | resource |
@@ -43,6 +44,9 @@ module "my_domain" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_domain"></a> [domain](#input_domain) | Name of the domain to manage. | `string` | n/a | yes |
+| <a name="input_bimi_avatar_preference"></a> [bimi_avatar_preference](#input_bimi_avatar_preference) | Avatar Preference. Lets the Domain Owner express a preference to show either the BIMI logo or a sender’s personal avatar where both are supported. | `string` | `"brand"` | no |
+| <a name="input_bimi_logo_url"></a> [bimi_logo_url](#input_bimi_logo_url) | URL of the log that should be used for BIMI. The file must be a SVG document and follow [BIMI specifications](https://bimigroup.org/creating-bimi-svg-logo-files/). | `string` | `""` | no |
+| <a name="input_bimi_vmc_url"></a> [bimi_vmc_url](#input_bimi_vmc_url) | URL of the Verified Mark Certificate or Common Mark Certificate. | `string` | `""` | no |
 | <a name="input_mx_servers"></a> [mx_servers](#input_mx_servers) | Informations regarding MX servers. **MX servers are required to enable Transactional Emails.** | ```list(object({ address = string priority = number }))``` | ```[ { "address": "blackhole.scw-tem.cloud.", "priority": 10 } ]``` | no |
 | <a name="input_project_id"></a> [project_id](#input_project_id) | ID of the project the domain is associated with. Ressource will be created in the project set at the provider level if null. | `string` | `null` | no |
 | <a name="input_setup_tem"></a> [setup_tem](#input_setup_tem) | Whether to create a Transaction Email service. **Beware that the service is only available in region `fr-par` at the moment.** | `bool` | `false` | no |
