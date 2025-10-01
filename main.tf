@@ -26,7 +26,7 @@ resource "scaleway_domain_record" "dmarc" {
 
   data     = scaleway_tem_domain.this[count.index].dmarc_config
   dns_zone = local.dns_zone
-  name     = scaleway_tem_domain.this[count.index].dmarc_name
+  name     = trimsuffix(scaleway_tem_domain.this[count.index].dmarc_name, format(".%s.", local.dns_zone))
   type     = "TXT"
 }
 
