@@ -12,6 +12,15 @@ resource "scaleway_tem_domain" "this" {
   project_id = var.project_id
 }
 
+resource "scaleway_domain_record" "bimi" {
+  count = var.bimi_logo_url != null ? 1 : 0
+
+  data     = format("v=BIMI1;l=%s", var.bimi_logo_url)
+  dns_zone = local.dns_zone
+  name     = "default._bimi"
+  type     = "TXT"
+}
+
 resource "scaleway_domain_record" "dkim" {
   count = var.setup_tem ? 1 : 0
 
