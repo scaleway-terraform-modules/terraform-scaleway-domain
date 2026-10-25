@@ -23,7 +23,7 @@ module "my_domain" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | >= 0.13 |
+| <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | >= 1.11 |
 | <a name="requirement_scaleway"></a> [scaleway](#requirement_scaleway) | >= 2.40.0 |
 
 ## Resources
