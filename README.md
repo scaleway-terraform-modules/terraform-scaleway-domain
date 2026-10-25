@@ -13,7 +13,7 @@ Beware this module *can not* be used to register a new domain. Existing domains 
 ```hcl
 module "my_domain" {
   source  = "scaleway-terraform-modules/domain/scaleway"
-  version = "1.0.2"
+  version = "~> 2.1"
 
 }
 ```
