@@ -2,13 +2,14 @@
 
 This example shows how to import an existing domain named `example.net` in order to manage it.
 
+The zone is imported by the `import` block in `main.tf`, at the address `module.domain.scaleway_domain_zone.this`. The import ID is the zone name (`{subdomain}.{domain}`, or just `{domain}` for the root zone). Once the zone is in the state, the `import` block has no effect and can be removed.
+
 ## Usage
 
 To run this example you need to execute:
 
 ```bash
 $ terraform init
-$ terraform import domain.scaleway_domain_zone.this example.net
 $ terraform plan
 $ terraform apply
 ```
