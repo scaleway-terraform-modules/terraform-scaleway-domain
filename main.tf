@@ -10,6 +10,7 @@ resource "scaleway_tem_domain" "this" {
   accept_tos = true
   name       = local.dns_zone
   project_id = var.project_id
+  region     = local.tem_region
 }
 
 resource "scaleway_domain_record" "bimi" {
@@ -62,6 +63,7 @@ resource "scaleway_tem_domain_validation" "this" {
   count = var.setup_tem ? 1 : 0
 
   domain_id = scaleway_tem_domain.this[count.index].id
+  region    = local.tem_region
 
   depends_on = [
     scaleway_domain_record.dkim,

@@ -47,7 +47,7 @@ variable "subdomain" {
 
 variable "setup_tem" {
   type        = bool
-  description = "Whether to set up Transactional Email for the domain. **Beware that the service is only available in region `fr-par` at the moment.**"
+  description = "Whether to set up Transactional Email for the domain. Transactional Email is only available in region `fr-par`: the module always creates it there, whatever the provider's region."
   default     = false
 }
 
