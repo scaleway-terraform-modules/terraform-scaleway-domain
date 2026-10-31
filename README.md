@@ -5,6 +5,10 @@
 This repository is used to manage a domain on scaleway using terraform.
 Beware this module *can not* be used to register a new domain. Existing domains must first be imported manually after initializing the terraform project. Refer to examples for more informations.
 
+- ### MX records
+
+By default, the module creates a single MX record pointing to `blackhole.scw-tem.cloud.`, Scaleway's blackhole server, which rejects all incoming mail. This suits domains that only send mail through Transactional Email, and the record is created even when `setup_tem` is `false`. If the domain receives mail, set `mx_servers` to your own servers, or to `[]` to manage MX records outside of this module. Check the existing MX records before applying on an imported domain: records not managed by Terraform are kept, and the blackhole server would be added next to them.
+
 ## Usage
 
 - Setup the [scaleway provider](https://www.terraform.io/docs/providers/scaleway/index.html) in your tf file.
@@ -47,7 +51,7 @@ module "my_domain" {
 | <a name="input_bimi_avatar_preference"></a> [bimi_avatar_preference](#input_bimi_avatar_preference) | Avatar Preference. Lets the Domain Owner express a preference to show either the BIMI logo or a sender’s personal avatar where both are supported. | `string` | `"brand"` | no |
 | <a name="input_bimi_logo_url"></a> [bimi_logo_url](#input_bimi_logo_url) | URL of the log that should be used for BIMI. The file must be a SVG document and follow [BIMI specifications](https://bimigroup.org/creating-bimi-svg-logo-files/). | `string` | `""` | no |
 | <a name="input_bimi_vmc_url"></a> [bimi_vmc_url](#input_bimi_vmc_url) | URL of the Verified Mark Certificate or Common Mark Certificate. | `string` | `""` | no |
-| <a name="input_mx_servers"></a> [mx_servers](#input_mx_servers) | Informations regarding MX servers. **MX servers are required to enable Transactional Emails.** | ```list(object({ address = string priority = number }))``` | ```[ { "address": "blackhole.scw-tem.cloud.", "priority": 10 } ]``` | no |
+| <a name="input_mx_servers"></a> [mx_servers](#input_mx_servers) | MX servers of the domain. **MX servers are required to enable Transactional Email.** The default points to Scaleway's blackhole server, which rejects all incoming mail, and is created even when `setup_tem` is `false`. Set your own servers, or `[]` to manage MX records outside of this module. | ```list(object({ address = string priority = number }))``` | ```[ { "address": "blackhole.scw-tem.cloud.", "priority": 10 } ]``` | no |
 | <a name="input_project_id"></a> [project_id](#input_project_id) | ID of the project the domain is associated with. Ressource will be created in the project set at the provider level if null. | `string` | `null` | no |
 | <a name="input_setup_tem"></a> [setup_tem](#input_setup_tem) | Whether to create a Transaction Email service. **Beware that the service is only available in region `fr-par` at the moment.** | `bool` | `false` | no |
 | <a name="input_subdomain"></a> [subdomain](#input_subdomain) | Name of the subdomain to manage. | `string` | `""` | no |
