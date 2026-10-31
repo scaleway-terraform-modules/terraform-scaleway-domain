@@ -4,17 +4,17 @@ output "dns_zone" {
 }
 
 output "tem_id" {
-  description = "ID of the Transaction Email Domain."
+  description = "ID of the Transactional Email Domain."
   value       = try(scaleway_tem_domain.this[0].id, null)
 }
 
 output "tem_reputation" {
-  description = "Reputation of the Transaction Email Domain."
+  description = "Reputation of the Transactional Email Domain."
   value       = try(scaleway_tem_domain.this[0].reputation, null)
 }
 
 output "tem_status" {
-  description = "Status of the Transaction Email Domain."
+  description = "Status of the Transactional Email Domain."
   value       = try(scaleway_tem_domain.this[0].status, null)
 }
 

@@ -4,11 +4,11 @@ output "subdomain_zone" {
 }
 
 output "tem_id" {
-  description = "ID of the Transaction Email Domain."
+  description = "ID of the Transactional Email Domain."
   value       = module.subdomain.tem_id
 }
 
 output "tem_status" {
-  description = "Status of the Transaction Email Domain."
+  description = "Status of the Transactional Email Domain."
   value       = module.subdomain.tem_status
 }

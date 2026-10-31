@@ -11,7 +11,7 @@ variable "bimi_avatar_preference" {
 
 variable "bimi_logo_url" {
   type        = string
-  description = "URL of the log that should be used for BIMI. The file must be a SVG document and follow [BIMI specifications](https://bimigroup.org/creating-bimi-svg-logo-files/)."
+  description = "URL of the logo that should be used for BIMI. The file must be a SVG document and follow [BIMI specifications](https://bimigroup.org/creating-bimi-svg-logo-files/)."
   default     = ""
 }
 
@@ -34,7 +34,7 @@ variable "mx_servers" {
 }
 
 variable "project_id" {
-  description = "ID of the project the domain is associated with. Ressource will be created in the project set at the provider level if null."
+  description = "ID of the project the domain is associated with. Resource will be created in the project set at the provider level if null."
   type        = string
   default     = null
 }
@@ -47,6 +47,6 @@ variable "subdomain" {
 
 variable "setup_tem" {
   type        = bool
-  description = "Whether to create a Transaction Email service. **Beware that the service is only available in region `fr-par` at the moment.**"
+  description = "Whether to set up Transactional Email for the domain. **Beware that the service is only available in region `fr-par` at the moment.**"
   default     = false
 }
