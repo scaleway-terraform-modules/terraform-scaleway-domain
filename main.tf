@@ -26,14 +26,14 @@ resource "scaleway_domain_record" "dkim" {
 
   data     = scaleway_tem_domain.this[count.index].dkim_config
   dns_zone = local.dns_zone
-  name     = format("%s._domainkey", scaleway_tem_domain.this[count.index].project_id)
+  name     = trimsuffix(scaleway_tem_domain.this[count.index].dkim_name, format(".%s.", local.dns_zone))
   type     = "TXT"
 }
 
 resource "scaleway_domain_record" "dmarc" {
   count = var.setup_tem ? 1 : 0
 
-  data     = var.bimi_logo_url != "" && var.setup_tem ? replace(scaleway_tem_domain.this[0].dmarc_config, "p=none", "p=quarantine") : scaleway_tem_domain.this[0].dmarc_config
+  data     = var.bimi_logo_url != "" && var.setup_tem ? replace(scaleway_tem_domain.this[count.index].dmarc_config, "p=none", "p=quarantine") : scaleway_tem_domain.this[count.index].dmarc_config
   dns_zone = local.dns_zone
   name     = trimsuffix(scaleway_tem_domain.this[count.index].dmarc_name, format(".%s.", local.dns_zone))
   type     = "TXT"
