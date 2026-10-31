@@ -3,7 +3,7 @@
 ## Purpose
 
 This repository is used to manage a domain on scaleway using terraform.
-Beware this module *can not* be used to register a new domain. Existing domains must first be imported manually after initializing the terraform project. Refer to examples for more informations.
+Beware this module *can not* be used to register a new domain. Existing domains must first be imported, e.g. with an `import` block targeting `module.<name>.scaleway_domain_zone.this`. Refer to examples for more informations.
 
 - ### MX records
 
