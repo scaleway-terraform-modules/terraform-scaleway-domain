@@ -52,7 +52,7 @@ resource "scaleway_domain_record" "mx" {
 resource "scaleway_domain_record" "spf" {
   count = var.setup_tem ? 1 : 0
 
-  data     = format("v=spf1 %s -all", scaleway_tem_domain.this[count.index].spf_config)
+  data     = join(" ", concat(["v=spf1", scaleway_tem_domain.this[count.index].spf_config], try(var.spf.mechanisms, []), [try(var.spf.all, "-all")]))
   dns_zone = local.dns_zone
   name     = ""
   type     = "TXT"
