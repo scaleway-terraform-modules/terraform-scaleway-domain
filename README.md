@@ -3,7 +3,32 @@
 ## Purpose
 
 This repository is used to manage a domain on scaleway using terraform.
-Beware this module *can not* be used to register a new domain. Existing domains must first be imported, e.g. with an `import` block targeting `module.<name>.scaleway_domain_zone.this`. Refer to examples for more informations.
+Beware this module *can not* be used to register a new domain. Existing domains must first be imported (see below). Refer to examples for more informations.
+
+- ### Importing an existing domain
+
+The root zone of a domain already exists on Scaleway, so it must be imported before the module can manage it. With Terraform >= 1.5, use an `import` block in your root module, targeting the zone inside the module:
+
+```hcl
+import {
+  to = module.my_domain.scaleway_domain_zone.this
+  id = "example.net"
+}
+```
+
+Subdomain zones (`subdomain` set) are created by the module and don't need to be imported. See the [existing-domain](examples/existing-domain) example.
+
+- ### Transactional Email
+
+Set `setup_tem = true` to send mail from the zone with Scaleway Transactional Email. The module then creates the Transactional Email domain, publishes its DKIM, SPF and DMARC records in the zone, and waits for Scaleway to validate the domain. Note that:
+
+- the module accepts Transactional Email's terms of service on your behalf (`accept_tos = true`);
+- the service is only available in region `fr-par`;
+- the SPF record only authorises Transactional Email and ends with `-all`: mail sent for the domain by other services will fail SPF checks.
+
+- ### BIMI
+
+Set `bimi_logo_url` (and optionally `bimi_vmc_url` and `bimi_avatar_preference`) to publish a [BIMI](https://bimigroup.org/) record. Mail clients only display the logo when the domain enforces DMARC: the BIMI record is only useful with `setup_tem = true`, and in that case the module switches the DMARC policy from `p=none` to `p=quarantine`.
 
 - ### MX records
 
@@ -19,8 +44,11 @@ module "my_domain" {
   source  = "scaleway-terraform-modules/domain/scaleway"
   version = "~> 2.1"
 
+  domain = "example.net"
 }
 ```
+
+See the [examples](examples) folder for runnable configurations covering the most common use-cases (importing an existing domain, managing a subdomain, setting up Transactional Email with external MX servers).
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -73,4 +101,4 @@ Module is maintained with help from [the community](https://github.com/scaleway-
 
 ## License
 
-Mozilla Public License 2.0 Licensed. See [LICENSE](https://github.com/scaleway-terraform-modules/terraform-scaleway-domain/tree/master/LICENSE) for full details.
+Mozilla Public License 2.0 Licensed. See [LICENSE](https://github.com/scaleway-terraform-modules/terraform-scaleway-domain/tree/main/LICENSE) for full details.
