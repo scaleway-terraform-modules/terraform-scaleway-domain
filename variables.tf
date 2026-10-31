@@ -22,7 +22,7 @@ variable "bimi_vmc_url" {
 }
 
 variable "mx_servers" {
-  description = "Informations regarding MX servers. **MX servers are required to enable Transactional Emails.**"
+  description = "MX servers of the domain. **MX servers are required to enable Transactional Email.** The default points to Scaleway's blackhole server, which rejects all incoming mail, and is created even when `setup_tem` is `false`. Set your own servers, or `[]` to manage MX records outside of this module."
   type = list(object({
     address  = string
     priority = number
