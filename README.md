@@ -24,7 +24,7 @@ Set `setup_tem = true` to send mail from the zone with Scaleway Transactional Em
 
 - the module accepts Transactional Email's terms of service on your behalf (`accept_tos = true`);
 - the service is only available in region `fr-par`;
-- the SPF record only authorises Transactional Email and ends with `-all`: mail sent for the domain by other services will fail SPF checks.
+- the SPF record authorises Transactional Email and ends with `-all` by default: mail sent for the domain by other services fails SPF checks unless you list them in `spf.mechanisms` (e.g. `include:_spf.google.com`). Set `spf.all` to `~all` (softfail) or `?all` (neutral) to be less strict with other senders, e.g. for forwarded mail. A domain can only have one SPF record, so don't publish another one in the zone. SPF allows at most 10 DNS lookups per check, and each `include:`, `a`, `mx`, `ptr` or `exists:` mechanism counts, including those inside included records.
 
 - ### BIMI
 
@@ -105,6 +105,7 @@ See the [examples](examples) folder for runnable configurations covering the mos
 | <a name="input_mx_servers"></a> [mx_servers](#input_mx_servers) | MX servers of the domain. **MX servers are required to enable Transactional Email.** The default points to Scaleway's blackhole server, which rejects all incoming mail, and is created even when `setup_tem` is `false`. Set your own servers, or `[]` to manage MX records outside of this module. | ```list(object({ address = string priority = number }))``` | ```[ { "address": "blackhole.scw-tem.cloud.", "priority": 10 } ]``` | no |
 | <a name="input_project_id"></a> [project_id](#input_project_id) | ID of the project the domain is associated with. Resource will be created in the project set at the provider level if null. | `string` | `null` | no |
 | <a name="input_setup_tem"></a> [setup_tem](#input_setup_tem) | Whether to set up Transactional Email for the domain. **Beware that the service is only available in region `fr-par` at the moment.** | `bool` | `false` | no |
+| <a name="input_spf"></a> [spf](#input_spf) | Settings of the SPF record published with Transactional Email. `mechanisms` lists additional SPF mechanisms authorising other services to send mail for the domain, e.g. `include:_spf.google.com` or `ip4:192.0.2.1`, inserted before the final `all`. `all` sets how receivers treat other senders: `-all` (fail, the default), `~all` (softfail) or `?all` (neutral). Requires `setup_tem`. | ```object({ mechanisms = optional(list(string), []) all = optional(string, "-all") })``` | `null` | no |
 | <a name="input_subdomain"></a> [subdomain](#input_subdomain) | Name of the subdomain to manage. | `string` | `""` | no |
 
 ## Outputs

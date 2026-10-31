@@ -50,3 +50,27 @@ variable "setup_tem" {
   description = "Whether to set up Transactional Email for the domain. **Beware that the service is only available in region `fr-par` at the moment.**"
   default     = false
 }
+
+variable "spf" {
+  description = "Settings of the SPF record published with Transactional Email. `mechanisms` lists additional SPF mechanisms authorising other services to send mail for the domain, e.g. `include:_spf.google.com` or `ip4:192.0.2.1`, inserted before the final `all`. `all` sets how receivers treat other senders: `-all` (fail, the default), `~all` (softfail) or `?all` (neutral). Requires `setup_tem`."
+  type = object({
+    mechanisms = optional(list(string), [])
+    all        = optional(string, "-all")
+  })
+  default = null
+
+  validation {
+    condition     = alltrue([for mechanism in try(var.spf.mechanisms, []) : can(regex("^[-+?~]?((a|mx)([:/][^[:space:]]+)?|ptr(:[^[:space:]]+)?|(include|exists|ip4|ip6):[^[:space:]]+)$", mechanism))])
+    error_message = "'spf.mechanisms' values must be single SPF mechanisms (`a`, `mx`, `ptr`, `include:`, `exists:`, `ip4:` or `ip6:`, with an optional qualifier), without spaces. Use 'spf.all' to set the final `all`."
+  }
+
+  validation {
+    condition     = contains(["-all", "~all", "?all"], try(var.spf.all, "-all"))
+    error_message = "'spf.all' must be one of `-all`, `~all` or `?all`."
+  }
+
+  validation {
+    condition     = var.spf == null || var.setup_tem
+    error_message = "'spf' requires 'setup_tem' to be true: the module only publishes an SPF record with Transactional Email."
+  }
+}
