@@ -62,4 +62,11 @@ resource "scaleway_tem_domain_validation" "this" {
   count = var.setup_tem ? 1 : 0
 
   domain_id = scaleway_tem_domain.this[count.index].id
+
+  depends_on = [
+    scaleway_domain_record.dkim,
+    scaleway_domain_record.dmarc,
+    scaleway_domain_record.mx,
+    scaleway_domain_record.spf,
+  ]
 }
