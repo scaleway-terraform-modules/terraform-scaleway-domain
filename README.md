@@ -28,7 +28,7 @@ Set `setup_tem = true` to send mail from the zone with Scaleway Transactional Em
 
 - ### BIMI
 
-Set `bimi_logo_url` (and optionally `bimi_vmc_url` and `bimi_avatar_preference`) to publish a [BIMI](https://bimigroup.org/) record. Mail clients only display the logo when the domain enforces DMARC: the BIMI record is only useful with `setup_tem = true`, and in that case the module switches the DMARC policy from `p=none` to `p=quarantine`.
+Set `bimi_logo_url` (and optionally `bimi_vmc_url` and `bimi_avatar_preference`) to publish a [BIMI](https://bimigroup.org/) record. Mail clients only display the logo when the domain enforces DMARC, so BIMI requires `setup_tem = true`, and the module then switches the DMARC policy from `p=none` to `p=quarantine`.
 
 - ### MX records
 
@@ -77,7 +77,7 @@ See the [examples](examples) folder for runnable configurations covering the mos
 |------|-------------|------|---------|:--------:|
 | <a name="input_domain"></a> [domain](#input_domain) | Name of the domain to manage. | `string` | n/a | yes |
 | <a name="input_bimi_avatar_preference"></a> [bimi_avatar_preference](#input_bimi_avatar_preference) | Avatar Preference. Lets the Domain Owner express a preference to show either the BIMI logo or a sender’s personal avatar where both are supported. | `string` | `"brand"` | no |
-| <a name="input_bimi_logo_url"></a> [bimi_logo_url](#input_bimi_logo_url) | URL of the logo that should be used for BIMI. The file must be a SVG document and follow [BIMI specifications](https://bimigroup.org/creating-bimi-svg-logo-files/). | `string` | `""` | no |
+| <a name="input_bimi_logo_url"></a> [bimi_logo_url](#input_bimi_logo_url) | URL of the logo that should be used for BIMI. The file must be a SVG document and follow [BIMI specifications](https://bimigroup.org/creating-bimi-svg-logo-files/). Requires `setup_tem`, and switches the DMARC policy to `p=quarantine`, as mail clients only display BIMI logos for domains enforcing DMARC. | `string` | `""` | no |
 | <a name="input_bimi_vmc_url"></a> [bimi_vmc_url](#input_bimi_vmc_url) | URL of the Verified Mark Certificate or Common Mark Certificate. | `string` | `""` | no |
 | <a name="input_mx_servers"></a> [mx_servers](#input_mx_servers) | MX servers of the domain. **MX servers are required to enable Transactional Email.** The default points to Scaleway's blackhole server, which rejects all incoming mail, and is created even when `setup_tem` is `false`. Set your own servers, or `[]` to manage MX records outside of this module. | ```list(object({ address = string priority = number }))``` | ```[ { "address": "blackhole.scw-tem.cloud.", "priority": 10 } ]``` | no |
 | <a name="input_project_id"></a> [project_id](#input_project_id) | ID of the project the domain is associated with. Resource will be created in the project set at the provider level if null. | `string` | `null` | no |

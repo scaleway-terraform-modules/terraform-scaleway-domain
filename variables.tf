@@ -11,8 +11,13 @@ variable "bimi_avatar_preference" {
 
 variable "bimi_logo_url" {
   type        = string
-  description = "URL of the logo that should be used for BIMI. The file must be a SVG document and follow [BIMI specifications](https://bimigroup.org/creating-bimi-svg-logo-files/)."
+  description = "URL of the logo that should be used for BIMI. The file must be a SVG document and follow [BIMI specifications](https://bimigroup.org/creating-bimi-svg-logo-files/). Requires `setup_tem`, and switches the DMARC policy to `p=quarantine`, as mail clients only display BIMI logos for domains enforcing DMARC."
   default     = ""
+
+  validation {
+    condition     = var.bimi_logo_url == "" || var.setup_tem
+    error_message = "'bimi_logo_url' requires 'setup_tem' to be true: BIMI needs the DMARC record created with Transactional Email."
+  }
 }
 
 variable "bimi_vmc_url" {
