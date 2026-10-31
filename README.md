@@ -113,8 +113,13 @@ See the [examples](examples) folder for runnable configurations covering the mos
 | Name | Description |
 |------|-------------|
 | <a name="output_dns_zone"></a> [dns_zone](#output_dns_zone) | DNS Zone of the domain. |
+| <a name="output_dns_zone_ns"></a> [dns_zone_ns](#output_dns_zone_ns) | Name servers of the DNS zone, to declare at the registrar, or as NS records in the parent zone for a subdomain. |
+| <a name="output_dns_zone_ns_default"></a> [dns_zone_ns_default](#output_dns_zone_ns_default) | Default Scaleway name servers of the DNS zone. |
+| <a name="output_dns_zone_ns_master"></a> [dns_zone_ns_master](#output_dns_zone_ns_master) | Master name servers of the DNS zone, for secondary DNS setups. |
+| <a name="output_dns_zone_status"></a> [dns_zone_status](#output_dns_zone_status) | Status of the DNS zone. |
 | <a name="output_tem_id"></a> [tem_id](#output_tem_id) | ID of the Transactional Email Domain. |
 | <a name="output_tem_reputation"></a> [tem_reputation](#output_tem_reputation) | Reputation of the Transactional Email Domain. |
+| <a name="output_tem_smtp"></a> [tem_smtp](#output_tem_smtp) | SMTP settings to send mail through Transactional Email: `host`, `port`, `port_alternative`, `port_unsecure`, `smtps_port`, `smtps_port_alternative` and `auth_user`. The password is a Scaleway API secret key, not managed by this module. |
 | <a name="output_tem_status"></a> [tem_status](#output_tem_status) | Status of the Transactional Email Domain. |
 | <a name="output_tem_validated"></a> [tem_validated](#output_tem_validated) | Indicates if the domain has been verified for email sending. |
 <!-- END_TF_DOCS -->
