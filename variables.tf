@@ -1,8 +1,3 @@
-variable "domain" {
-  type        = string
-  description = "Name of the domain to manage."
-}
-
 variable "bimi_avatar_preference" {
   type        = string
   description = "Avatar Preference. Lets the Domain Owner express a preference to show either the BIMI logo or a sender’s personal avatar where both are supported."
@@ -41,6 +36,11 @@ variable "bimi_vmc_url" {
   }
 }
 
+variable "domain" {
+  type        = string
+  description = "Name of the domain to manage."
+}
+
 variable "mx_servers" {
   type = list(object({
     address  = string
@@ -67,22 +67,6 @@ variable "project_id" {
   type        = string
   description = "ID of the project the domain is associated with. Resource will be created in the project set at the provider level if null."
   default     = null
-}
-
-variable "subdomain" {
-  type        = string
-  description = "Name of the subdomain to manage."
-  default     = ""
-
-  validation {
-    condition     = var.subdomain == "" || can(regex("^(?i)([a-z0-9_]([a-z0-9_-]*[a-z0-9])?\\.)*[a-z0-9_]([a-z0-9_-]*[a-z0-9])?$", var.subdomain))
-    error_message = "'subdomain' must be a valid DNS name relative to 'domain', without a trailing dot, e.g. `contact`."
-  }
-
-  validation {
-    condition     = !endswith(lower(var.subdomain), lower(".${var.domain}"))
-    error_message = "'subdomain' must not include the parent domain: use e.g. `contact`, not `contact.example.net`."
-  }
 }
 
 variable "setup_tem" {
@@ -112,5 +96,21 @@ variable "spf" {
   validation {
     condition     = var.spf == null || var.setup_tem
     error_message = "'spf' requires 'setup_tem' to be true: the module only publishes an SPF record with Transactional Email."
+  }
+}
+
+variable "subdomain" {
+  type        = string
+  description = "Name of the subdomain to manage."
+  default     = ""
+
+  validation {
+    condition     = var.subdomain == "" || can(regex("^(?i)([a-z0-9_]([a-z0-9_-]*[a-z0-9])?\\.)*[a-z0-9_]([a-z0-9_-]*[a-z0-9])?$", var.subdomain))
+    error_message = "'subdomain' must be a valid DNS name relative to 'domain', without a trailing dot, e.g. `contact`."
+  }
+
+  validation {
+    condition     = !endswith(lower(var.subdomain), lower(".${var.domain}"))
+    error_message = "'subdomain' must not include the parent domain: use e.g. `contact`, not `contact.example.net`."
   }
 }
