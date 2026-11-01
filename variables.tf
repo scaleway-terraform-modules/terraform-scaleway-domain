@@ -73,6 +73,11 @@ variable "subdomain" {
   description = "Name of the subdomain to manage."
   type        = string
   default     = ""
+
+  validation {
+    condition     = var.subdomain == "" || can(regex("^(?i)([a-z0-9_]([a-z0-9_-]*[a-z0-9])?\\.)*[a-z0-9_]([a-z0-9_-]*[a-z0-9])?$", var.subdomain))
+    error_message = "'subdomain' must be a valid DNS name relative to 'domain', without a trailing dot, e.g. `contact`."
+  }
 }
 
 variable "setup_tem" {
