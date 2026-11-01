@@ -43,12 +43,13 @@ resource "scaleway_domain_record" "dmarc" {
 }
 
 resource "scaleway_domain_record" "mx" {
-  for_each = { for server in var.mx_servers : server.address => server }
+  for_each = { for server in var.mx_servers.servers : server.address => server }
 
   data     = each.value.address
   dns_zone = local.dns_zone
   name     = ""
   priority = each.value.priority
+  ttl      = var.mx_servers.ttl
   type     = "MX"
 }
 

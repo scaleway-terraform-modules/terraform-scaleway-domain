@@ -73,29 +73,40 @@ variable "domain" {
 }
 
 variable "mx_servers" {
-  type = list(object({
-    address  = string
-    priority = number
-  }))
-  description = "MX servers of the domain. **MX servers are required to enable Transactional Email.** The default points to Scaleway's blackhole server, which rejects all incoming mail, and is created even when `setup_tem` is `false`. Set your own servers, or `[]` to manage MX records outside of this module. End external host names with a dot (e.g. `mx.example.com.`), as names without it may be relative to the zone."
-  default = [{
-    address  = "blackhole.scw-tem.cloud."
-    priority = 10
-  }]
+  type = object({
+    servers = list(object({
+      address  = string
+      priority = number
+    }))
+    ttl = optional(number)
+  })
+  description = "MX servers of the domain. `servers` lists their `address` and `priority`, and `ttl` sets the TTL in seconds of all MX records, as DNS expects records sharing a name and type to share their TTL (provider default when unset). **MX servers are required to enable Transactional Email.** The default points to Scaleway's blackhole server, which rejects all incoming mail, and is created even when `setup_tem` is `false`. Set your own servers, or `servers = []` to manage MX records outside of this module. End external host names with a dot (e.g. `mx.example.com.`), as names without it may be relative to the zone."
+  default = {
+    servers = [{
+      address  = "blackhole.scw-tem.cloud."
+      priority = 10
+    }]
+  }
+  nullable = false
 
   validation {
-    condition     = alltrue([for server in var.mx_servers : server.priority >= 0 && server.priority <= 65535 && floor(server.priority) == server.priority])
-    error_message = "'mx_servers[].priority' must be an integer between 0 and 65535."
+    condition     = alltrue([for server in var.mx_servers.servers : server.priority >= 0 && server.priority <= 65535 && floor(server.priority) == server.priority])
+    error_message = "'mx_servers.servers[].priority' must be an integer between 0 and 65535."
   }
 
   validation {
-    condition     = alltrue([for server in var.mx_servers : can(regex("^(?i)([a-z0-9]([a-z0-9-]*[a-z0-9])?\\.)*[a-z0-9]([a-z0-9-]*[a-z0-9])?\\.?$", server.address))])
-    error_message = "'mx_servers[].address' must be a valid host name, e.g. `mx.example.net.`."
+    condition     = alltrue([for server in var.mx_servers.servers : can(regex("^(?i)([a-z0-9]([a-z0-9-]*[a-z0-9])?\\.)*[a-z0-9]([a-z0-9-]*[a-z0-9])?\\.?$", server.address))])
+    error_message = "'mx_servers.servers[].address' must be a valid host name, e.g. `mx.example.net.`."
   }
 
   validation {
-    condition     = length(distinct([for server in var.mx_servers : server.address])) == length(var.mx_servers)
-    error_message = "'mx_servers[].address' values must be unique."
+    condition     = var.mx_servers == null ? true : (var.mx_servers.ttl == null ? true : var.mx_servers.ttl >= 1 && var.mx_servers.ttl <= 2147483647 && floor(var.mx_servers.ttl) == var.mx_servers.ttl)
+    error_message = "'mx_servers.ttl' must be an integer between 1 and 2147483647 (seconds)."
+  }
+
+  validation {
+    condition     = length(distinct([for server in var.mx_servers.servers : server.address])) == length(var.mx_servers.servers)
+    error_message = "'mx_servers.servers[].address' values must be unique."
   }
 }
 
