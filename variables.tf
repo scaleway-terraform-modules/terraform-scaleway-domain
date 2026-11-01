@@ -18,6 +18,11 @@ variable "bimi_logo_url" {
   type        = string
   description = "URL of the logo that should be used for BIMI. The file must be a SVG document and follow [BIMI specifications](https://bimigroup.org/creating-bimi-svg-logo-files/). Logos are only displayed when DMARC is enforced: see the README for the requirements."
   default     = ""
+
+  validation {
+    condition     = var.bimi_logo_url == "" || startswith(var.bimi_logo_url, "https://")
+    error_message = "'bimi_logo_url' must be an `https://` URL."
+  }
 }
 
 variable "bimi_vmc_url" {
