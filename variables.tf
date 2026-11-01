@@ -18,6 +18,11 @@ variable "bimi_logo_url" {
     condition     = var.bimi_logo_url == "" || startswith(var.bimi_logo_url, "https://")
     error_message = "'bimi_logo_url' must be an `https://` URL."
   }
+
+  validation {
+    condition     = var.bimi_logo_url == "" || var.dmarc == null ? true : (var.dmarc.policy == "reject" || (var.dmarc.policy == "quarantine" && (var.dmarc.pct == null || var.dmarc.pct == 100))) && var.dmarc.subdomain_policy != "none"
+    error_message = "'bimi_logo_url' requires an enforced DMARC policy: set 'dmarc.policy' to `quarantine` (without a 'dmarc.pct' below 100) or `reject`, and don't set 'dmarc.subdomain_policy' to `none`."
+  }
 }
 
 variable "bimi_vmc_url" {
