@@ -78,6 +78,11 @@ variable "subdomain" {
     condition     = var.subdomain == "" || can(regex("^(?i)([a-z0-9_]([a-z0-9_-]*[a-z0-9])?\\.)*[a-z0-9_]([a-z0-9_-]*[a-z0-9])?$", var.subdomain))
     error_message = "'subdomain' must be a valid DNS name relative to 'domain', without a trailing dot, e.g. `contact`."
   }
+
+  validation {
+    condition     = !endswith(lower(var.subdomain), lower(".${var.domain}"))
+    error_message = "'subdomain' must not include the parent domain: use e.g. `contact`, not `contact.example.net`."
+  }
 }
 
 variable "setup_tem" {
