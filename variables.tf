@@ -7,6 +7,11 @@ variable "bimi_avatar_preference" {
   type        = string
   description = "Avatar Preference. Lets the Domain Owner express a preference to show either the BIMI logo or a sender’s personal avatar where both are supported."
   default     = "brand"
+
+  validation {
+    condition     = contains(["brand", "personal"], var.bimi_avatar_preference)
+    error_message = "'bimi_avatar_preference' must be one of `brand` or `personal`."
+  }
 }
 
 variable "bimi_logo_url" {
