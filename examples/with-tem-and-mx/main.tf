@@ -11,7 +11,10 @@ module "subdomain" {
   domain    = local.domain_name
   subdomain = local.subdomain
 
-  setup_tem = true
+  tem = {
+    accept_tos = true
+  }
+
   mx_servers = {
     servers = [{
       address  = "mx1.example.com."
