@@ -5,9 +5,9 @@ resource "scaleway_domain_zone" "this" {
 }
 
 resource "scaleway_tem_domain" "this" {
-  count = var.setup_tem ? 1 : 0
+  count = var.tem != null ? 1 : 0
 
-  accept_tos = true
+  accept_tos = var.tem.accept_tos
   name       = local.dns_zone
   project_id = var.project_id
   region     = local.tem_region
@@ -24,7 +24,7 @@ resource "scaleway_domain_record" "bimi" {
 }
 
 resource "scaleway_domain_record" "dkim" {
-  count = var.setup_tem ? 1 : 0
+  count = var.tem != null ? 1 : 0
 
   data     = scaleway_tem_domain.this[count.index].dkim_config
   dns_zone = local.dns_zone
@@ -33,11 +33,11 @@ resource "scaleway_domain_record" "dkim" {
 }
 
 resource "scaleway_domain_record" "dmarc" {
-  count = var.setup_tem || var.dmarc != null ? 1 : 0
+  count = var.tem != null || var.dmarc != null ? 1 : 0
 
-  data     = var.dmarc != null ? local.dmarc_record : (var.bimi != null && var.setup_tem ? replace(scaleway_tem_domain.this[count.index].dmarc_config, "p=none", "p=quarantine") : scaleway_tem_domain.this[count.index].dmarc_config)
+  data     = var.dmarc != null ? local.dmarc_record : (var.bimi != null && var.tem != null ? replace(scaleway_tem_domain.this[count.index].dmarc_config, "p=none", "p=quarantine") : scaleway_tem_domain.this[count.index].dmarc_config)
   dns_zone = local.dns_zone
-  name     = var.setup_tem ? trimsuffix(scaleway_tem_domain.this[count.index].dmarc_name, format(".%s.", local.dns_zone)) : "_dmarc"
+  name     = var.tem != null ? trimsuffix(scaleway_tem_domain.this[count.index].dmarc_name, format(".%s.", local.dns_zone)) : "_dmarc"
   ttl      = var.dmarc == null ? null : var.dmarc.ttl
   type     = "TXT"
 }
@@ -54,7 +54,7 @@ resource "scaleway_domain_record" "mx" {
 }
 
 resource "scaleway_domain_record" "spf" {
-  count = var.setup_tem ? 1 : 0
+  count = var.tem != null ? 1 : 0
 
   data     = join(" ", concat(["v=spf1", scaleway_tem_domain.this[count.index].spf_config], try(var.spf.mechanisms, []), [try(var.spf.all, "-all")]))
   dns_zone = local.dns_zone
@@ -64,7 +64,7 @@ resource "scaleway_domain_record" "spf" {
 }
 
 resource "scaleway_tem_domain_validation" "this" {
-  count = var.setup_tem ? 1 : 0
+  count = var.tem != null ? 1 : 0
 
   domain_id = scaleway_tem_domain.this[count.index].id
   region    = local.tem_region
