@@ -29,6 +29,11 @@ variable "bimi_vmc_url" {
   type        = string
   description = "URL of the Verified Mark Certificate or Common Mark Certificate."
   default     = ""
+
+  validation {
+    condition     = var.bimi_vmc_url == "" || startswith(var.bimi_vmc_url, "https://")
+    error_message = "'bimi_vmc_url' must be an `https://` URL."
+  }
 }
 
 variable "mx_servers" {
