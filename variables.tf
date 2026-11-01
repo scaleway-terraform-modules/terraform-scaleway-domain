@@ -116,8 +116,9 @@ variable "spf" {
   type = object({
     mechanisms = optional(list(string), [])
     all        = optional(string, "-all")
+    ttl        = optional(number)
   })
-  description = "Settings of the SPF record published with Transactional Email. `mechanisms` lists additional SPF mechanisms authorising other services to send mail for the domain, e.g. `include:_spf.google.com` or `ip4:192.0.2.1`, inserted before the final `all`. `all` sets how receivers treat other senders: `-all` (fail, the default), `~all` (softfail) or `?all` (neutral). Requires `setup_tem`."
+  description = "Settings of the SPF record published with Transactional Email. `mechanisms` lists additional SPF mechanisms authorising other services to send mail for the domain, e.g. `include:_spf.google.com` or `ip4:192.0.2.1`, inserted before the final `all`. `all` sets how receivers treat other senders: `-all` (fail, the default), `~all` (softfail) or `?all` (neutral). `ttl` sets the TTL of the record in seconds (provider default when unset). Requires `setup_tem`."
   default     = null
 
   validation {
@@ -133,6 +134,11 @@ variable "spf" {
   validation {
     condition     = var.spf == null || var.setup_tem
     error_message = "'spf' requires 'setup_tem' to be true: the module only publishes an SPF record with Transactional Email."
+  }
+
+  validation {
+    condition     = var.spf == null ? true : (var.spf.ttl == null ? true : var.spf.ttl >= 1 && var.spf.ttl <= 2147483647 && floor(var.spf.ttl) == var.spf.ttl)
+    error_message = "'spf.ttl' must be an integer between 1 and 2147483647 (seconds)."
   }
 }
 
