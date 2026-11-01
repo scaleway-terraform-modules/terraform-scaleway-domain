@@ -1,43 +1,36 @@
-variable "bimi_avatar_preference" {
-  type        = string
-  description = "Avatar Preference. Lets the Domain Owner express a preference to show either the BIMI logo or a sender’s personal avatar where both are supported."
-  default     = "brand"
+variable "bimi" {
+  type = object({
+    logo_url          = string
+    vmc_url           = optional(string)
+    avatar_preference = optional(string, "brand")
+    ttl               = optional(number)
+  })
+  description = "BIMI settings. When set, the module publishes a BIMI record (`default._bimi`) in the zone. `logo_url` is the URL of the logo, a SVG document following the [BIMI specifications](https://bimigroup.org/creating-bimi-svg-logo-files/). `vmc_url` is the URL of the Verified Mark Certificate or Common Mark Certificate. `avatar_preference` lets the domain owner prefer the BIMI logo (`brand`, the default) or the sender's personal avatar (`personal`) where both are supported. `ttl` sets the TTL of the record in seconds (provider default when unset). Logos are only displayed when DMARC is enforced: see the README for the requirements."
+  default     = null
 
   validation {
-    condition     = contains(["brand", "personal"], var.bimi_avatar_preference)
-    error_message = "'bimi_avatar_preference' must be one of `brand` or `personal`."
-  }
-}
-
-variable "bimi_logo_url" {
-  type        = string
-  description = "URL of the logo that should be used for BIMI. The file must be a SVG document and follow [BIMI specifications](https://bimigroup.org/creating-bimi-svg-logo-files/). Logos are only displayed when DMARC is enforced: see the README for the requirements."
-  default     = ""
-
-  validation {
-    condition     = var.bimi_logo_url == "" || startswith(var.bimi_logo_url, "https://")
-    error_message = "'bimi_logo_url' must be an `https://` URL."
+    condition     = var.bimi == null ? true : startswith(var.bimi.logo_url, "https://")
+    error_message = "'bimi.logo_url' must be an `https://` URL."
   }
 
   validation {
-    condition     = var.bimi_logo_url == "" || var.dmarc == null ? true : (var.dmarc.policy == "reject" || (var.dmarc.policy == "quarantine" && (var.dmarc.pct == null || var.dmarc.pct == 100))) && var.dmarc.subdomain_policy != "none"
-    error_message = "'bimi_logo_url' requires an enforced DMARC policy: set 'dmarc.policy' to `quarantine` (without a 'dmarc.pct' below 100) or `reject`, and don't set 'dmarc.subdomain_policy' to `none`."
-  }
-}
-
-variable "bimi_vmc_url" {
-  type        = string
-  description = "URL of the Verified Mark Certificate or Common Mark Certificate."
-  default     = ""
-
-  validation {
-    condition     = var.bimi_vmc_url == "" || startswith(var.bimi_vmc_url, "https://")
-    error_message = "'bimi_vmc_url' must be an `https://` URL."
+    condition     = var.bimi == null ? true : (var.bimi.vmc_url == null ? true : startswith(var.bimi.vmc_url, "https://"))
+    error_message = "'bimi.vmc_url' must be an `https://` URL."
   }
 
   validation {
-    condition     = var.bimi_vmc_url == "" || var.bimi_logo_url != ""
-    error_message = "'bimi_vmc_url' requires 'bimi_logo_url' to be set."
+    condition     = var.bimi == null ? true : contains(["brand", "personal"], var.bimi.avatar_preference)
+    error_message = "'bimi.avatar_preference' must be one of `brand` or `personal`."
+  }
+
+  validation {
+    condition     = var.bimi == null || var.dmarc == null ? true : (var.dmarc.policy == "reject" || (var.dmarc.policy == "quarantine" && (var.dmarc.pct == null || var.dmarc.pct == 100))) && var.dmarc.subdomain_policy != "none"
+    error_message = "'bimi' requires an enforced DMARC policy: set 'dmarc.policy' to `quarantine` (without a 'dmarc.pct' below 100) or `reject`, and don't set 'dmarc.subdomain_policy' to `none`."
+  }
+
+  validation {
+    condition     = var.bimi == null ? true : (var.bimi.ttl == null ? true : var.bimi.ttl >= 1 && var.bimi.ttl <= 2147483647 && floor(var.bimi.ttl) == var.bimi.ttl)
+    error_message = "'bimi.ttl' must be an integer between 1 and 2147483647 (seconds)."
   }
 }
 

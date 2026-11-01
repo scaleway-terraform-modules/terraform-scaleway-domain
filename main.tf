@@ -14,11 +14,12 @@ resource "scaleway_tem_domain" "this" {
 }
 
 resource "scaleway_domain_record" "bimi" {
-  count = var.bimi_logo_url != "" ? 1 : 0
+  count = var.bimi == null ? 0 : 1
 
-  data     = format("v=BIMI1;l=%s;a=%s;avp=%s", var.bimi_logo_url, var.bimi_vmc_url, var.bimi_avatar_preference)
+  data     = format("v=BIMI1;l=%s;a=%s;avp=%s", var.bimi.logo_url, var.bimi.vmc_url == null ? "" : var.bimi.vmc_url, var.bimi.avatar_preference)
   dns_zone = local.dns_zone
   name     = "default._bimi"
+  ttl      = var.bimi.ttl
   type     = "TXT"
 }
 
@@ -34,7 +35,7 @@ resource "scaleway_domain_record" "dkim" {
 resource "scaleway_domain_record" "dmarc" {
   count = var.setup_tem || var.dmarc != null ? 1 : 0
 
-  data     = var.dmarc != null ? local.dmarc_record : (var.bimi_logo_url != "" && var.setup_tem ? replace(scaleway_tem_domain.this[count.index].dmarc_config, "p=none", "p=quarantine") : scaleway_tem_domain.this[count.index].dmarc_config)
+  data     = var.dmarc != null ? local.dmarc_record : (var.bimi != null && var.setup_tem ? replace(scaleway_tem_domain.this[count.index].dmarc_config, "p=none", "p=quarantine") : scaleway_tem_domain.this[count.index].dmarc_config)
   dns_zone = local.dns_zone
   name     = var.setup_tem ? trimsuffix(scaleway_tem_domain.this[count.index].dmarc_name, format(".%s.", local.dns_zone)) : "_dmarc"
   ttl      = var.dmarc == null ? null : var.dmarc.ttl
