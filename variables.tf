@@ -51,6 +51,11 @@ variable "mx_servers" {
     address  = "blackhole.scw-tem.cloud."
     priority = 10
   }]
+
+  validation {
+    condition     = alltrue([for server in var.mx_servers : server.priority >= 0 && server.priority <= 65535 && floor(server.priority) == server.priority])
+    error_message = "'mx_servers[].priority' must be an integer between 0 and 65535."
+  }
 }
 
 variable "project_id" {
