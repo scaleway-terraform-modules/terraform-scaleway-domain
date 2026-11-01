@@ -34,6 +34,11 @@ variable "bimi_vmc_url" {
     condition     = var.bimi_vmc_url == "" || startswith(var.bimi_vmc_url, "https://")
     error_message = "'bimi_vmc_url' must be an `https://` URL."
   }
+
+  validation {
+    condition     = var.bimi_vmc_url == "" || var.bimi_logo_url != ""
+    error_message = "'bimi_vmc_url' requires 'bimi_logo_url' to be set."
+  }
 }
 
 variable "mx_servers" {
