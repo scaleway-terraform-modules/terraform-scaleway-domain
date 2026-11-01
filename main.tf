@@ -37,6 +37,7 @@ resource "scaleway_domain_record" "dmarc" {
   data     = var.dmarc != null ? local.dmarc_record : (var.bimi_logo_url != "" && var.setup_tem ? replace(scaleway_tem_domain.this[count.index].dmarc_config, "p=none", "p=quarantine") : scaleway_tem_domain.this[count.index].dmarc_config)
   dns_zone = local.dns_zone
   name     = var.setup_tem ? trimsuffix(scaleway_tem_domain.this[count.index].dmarc_name, format(".%s.", local.dns_zone)) : "_dmarc"
+  ttl      = var.dmarc == null ? null : var.dmarc.ttl
   type     = "TXT"
 }
 
