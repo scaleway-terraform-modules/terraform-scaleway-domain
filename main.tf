@@ -56,6 +56,7 @@ resource "scaleway_domain_record" "spf" {
   data     = join(" ", concat(["v=spf1", scaleway_tem_domain.this[count.index].spf_config], try(var.spf.mechanisms, []), [try(var.spf.all, "-all")]))
   dns_zone = local.dns_zone
   name     = ""
+  ttl      = var.spf == null ? null : var.spf.ttl
   type     = "TXT"
 }
 
