@@ -42,7 +42,7 @@ variable "bimi_vmc_url" {
 }
 
 variable "mx_servers" {
-  description = "MX servers of the domain. **MX servers are required to enable Transactional Email.** The default points to Scaleway's blackhole server, which rejects all incoming mail, and is created even when `setup_tem` is `false`. Set your own servers, or `[]` to manage MX records outside of this module."
+  description = "MX servers of the domain. **MX servers are required to enable Transactional Email.** The default points to Scaleway's blackhole server, which rejects all incoming mail, and is created even when `setup_tem` is `false`. Set your own servers, or `[]` to manage MX records outside of this module. End external host names with a dot (e.g. `mx.example.com.`), as names without it may be relative to the zone."
   type = list(object({
     address  = string
     priority = number
@@ -55,6 +55,11 @@ variable "mx_servers" {
   validation {
     condition     = alltrue([for server in var.mx_servers : server.priority >= 0 && server.priority <= 65535 && floor(server.priority) == server.priority])
     error_message = "'mx_servers[].priority' must be an integer between 0 and 65535."
+  }
+
+  validation {
+    condition     = alltrue([for server in var.mx_servers : can(regex("^(?i)([a-z0-9]([a-z0-9-]*[a-z0-9])?\\.)*[a-z0-9]([a-z0-9-]*[a-z0-9])?\\.?$", server.address))])
+    error_message = "'mx_servers[].address' must be a valid host name, e.g. `mx.example.net.`."
   }
 }
 
