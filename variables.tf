@@ -93,6 +93,11 @@ variable "mx_servers" {
     condition     = alltrue([for server in var.mx_servers : can(regex("^(?i)([a-z0-9]([a-z0-9-]*[a-z0-9])?\\.)*[a-z0-9]([a-z0-9-]*[a-z0-9])?\\.?$", server.address))])
     error_message = "'mx_servers[].address' must be a valid host name, e.g. `mx.example.net.`."
   }
+
+  validation {
+    condition     = length(distinct([for server in var.mx_servers : server.address])) == length(var.mx_servers)
+    error_message = "'mx_servers[].address' values must be unique."
+  }
 }
 
 variable "project_id" {
