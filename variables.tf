@@ -1,6 +1,6 @@
 variable "domain" {
-  description = "Name of the domain to manage."
   type        = string
+  description = "Name of the domain to manage."
 }
 
 variable "bimi_avatar_preference" {
@@ -42,11 +42,11 @@ variable "bimi_vmc_url" {
 }
 
 variable "mx_servers" {
-  description = "MX servers of the domain. **MX servers are required to enable Transactional Email.** The default points to Scaleway's blackhole server, which rejects all incoming mail, and is created even when `setup_tem` is `false`. Set your own servers, or `[]` to manage MX records outside of this module. End external host names with a dot (e.g. `mx.example.com.`), as names without it may be relative to the zone."
   type = list(object({
     address  = string
     priority = number
   }))
+  description = "MX servers of the domain. **MX servers are required to enable Transactional Email.** The default points to Scaleway's blackhole server, which rejects all incoming mail, and is created even when `setup_tem` is `false`. Set your own servers, or `[]` to manage MX records outside of this module. End external host names with a dot (e.g. `mx.example.com.`), as names without it may be relative to the zone."
   default = [{
     address  = "blackhole.scw-tem.cloud."
     priority = 10
@@ -64,14 +64,14 @@ variable "mx_servers" {
 }
 
 variable "project_id" {
-  description = "ID of the project the domain is associated with. Resource will be created in the project set at the provider level if null."
   type        = string
+  description = "ID of the project the domain is associated with. Resource will be created in the project set at the provider level if null."
   default     = null
 }
 
 variable "subdomain" {
-  description = "Name of the subdomain to manage."
   type        = string
+  description = "Name of the subdomain to manage."
   default     = ""
 
   validation {
@@ -92,12 +92,12 @@ variable "setup_tem" {
 }
 
 variable "spf" {
-  description = "Settings of the SPF record published with Transactional Email. `mechanisms` lists additional SPF mechanisms authorising other services to send mail for the domain, e.g. `include:_spf.google.com` or `ip4:192.0.2.1`, inserted before the final `all`. `all` sets how receivers treat other senders: `-all` (fail, the default), `~all` (softfail) or `?all` (neutral). Requires `setup_tem`."
   type = object({
     mechanisms = optional(list(string), [])
     all        = optional(string, "-all")
   })
-  default = null
+  description = "Settings of the SPF record published with Transactional Email. `mechanisms` lists additional SPF mechanisms authorising other services to send mail for the domain, e.g. `include:_spf.google.com` or `ip4:192.0.2.1`, inserted before the final `all`. `all` sets how receivers treat other senders: `-all` (fail, the default), `~all` (softfail) or `?all` (neutral). Requires `setup_tem`."
+  default     = null
 
   validation {
     condition     = alltrue([for mechanism in try(var.spf.mechanisms, []) : can(regex("^[-+?~]?((a|mx)([:/][^[:space:]]+)?|ptr(:[^[:space:]]+)?|(include|exists|ip4|ip6):[^[:space:]]+)$", mechanism))])
